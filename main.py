@@ -1,26 +1,22 @@
-#!usr/bin/python3
-
 import nmap
 
-scanner = nmap.PortScanner()
 
-print("-----------------------------------------------------------")
+def port_scanner(begin, end, ip):
+    scanner = nmap.PortScanner()
 
-print("-------------------Hoş geldiniz----------------------------")
+    for i in range(begin, end+1):
+        res = scanner.scan(ip, str(i))
+        res = res['scan'][ip]['tcp'][i]['state']
 
-ip_address = input("Lütfen Taramak İstediğiniz İp adresini Giriniz : ")
-print("Girdiğiniz İp Adres : ", ip_address)
-type(ip_address)
+        print(f'port {i} is {res}.')
 
 
-info = input("""\n Lütfen girdiğiniz ip adresini hangi taramayı yapmak istediğinizi seçiniz
-                1) SYN ACK Taramsı
-                2) UDP Taraması
-                3)Comprehensive Taraması \n""")
-
-if info == '1':
-    scanner.scan(ip_address, '-p-')
-    print(scanner.scaninfo())
-    print("Ip Durumu: ", scanner[ip_address].state())
-    print(scanner[ip_address].all_protocols())
-    print("Açık Portlar: ", scanner[ip_address]["tcp"].keys())
+print("-------------Hoş Geldiniz---------------")
+choice = input("\n 1- Port Scanner ")
+if choice == '1':
+    begin = input("Başlangıç Portunu Giriniz : ")
+    end = input("Bitiş Portunu Giriniz : ")
+    ip = input("Port kontrolu yapılacak ip adresini Giriniz : ")
+    port_scanner(int(begin), int(end), ip)
+else:
+    print("Yanlış Seçim")
